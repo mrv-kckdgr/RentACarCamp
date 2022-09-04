@@ -23,5 +23,10 @@ namespace Application.Features.Brands.Rules
             IPaginate<BrandEntity> result = await _brandEntityRepository.GetListAsync(b => b.Name == name);
             if (result.Items.Any()) throw new BusinessException("BrandEntity name exists.");
         }
+
+        public void BrandShouldExistsWhenRequested(BrandEntity brandEntity)
+        {            
+            if (brandEntity == null) throw new BusinessException("Requested doest not exist!");
+        }
     }
 }

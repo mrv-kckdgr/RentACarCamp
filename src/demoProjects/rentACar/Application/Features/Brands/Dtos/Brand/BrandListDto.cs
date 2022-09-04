@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Brands.Dtos
+namespace Application.Features.Brands.Dtos.Brand
 {
-    public class CreatedBrandEntityDto
+    public class BrandListDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

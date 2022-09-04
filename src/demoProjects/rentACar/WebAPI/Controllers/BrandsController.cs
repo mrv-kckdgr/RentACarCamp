@@ -1,5 +1,9 @@
 ﻿using Application.Features.Brands.Commands.CreateBrand;
-using Application.Features.Brands.Dtos;
+using Application.Features.Brands.Dtos.Brand;
+using Application.Features.Brands.Models;
+using Application.Features.Brands.Queries.GetByIdBrand;
+using Application.Features.Brands.Queries.GetListBrand;
+using Core.Application.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,5 +19,22 @@ namespace WebAPI.Controllers
             CreatedBrandEntityDto createdBrandEntityDto = await Mediator.Send(createBrandEntityCommand);
             return Created("", createdBrandEntityDto);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+        {
+            GetListBrandQuery getListBrandQuery = new() { PageRequest = pageRequest };
+            BrandListModel result = await Mediator.Send(getListBrandQuery);
+            return Ok(result);
+        }
+
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById([FromRoute] GetByIdBrandQuery getByIdBrandQuery)
+        {
+            BrandGetByIdDto brandGetByIdDto = await Mediator.Send(getByIdBrandQuery);
+            return Ok(brandGetByIdDto);
+        }
+
+
     }
 }
