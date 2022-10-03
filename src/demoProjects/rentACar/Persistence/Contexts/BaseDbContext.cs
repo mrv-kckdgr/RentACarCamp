@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Core.Security.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -14,7 +15,10 @@ namespace Persistence.Contexts
         protected IConfiguration Configuration { get; set; }
         public DbSet<BrandEntity> Brands { get; set; }
         public DbSet<ModelEntity> Models { get; set; }
-
+        public DbSet<User> Users { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
         {
@@ -47,6 +51,19 @@ namespace Persistence.Contexts
                 a.Property(p => p.DailyPrice).HasColumnName("DailyPrice");
                 a.Property(p => p.ImageUrl).HasColumnName("ImageUrl");
                 a.HasOne(p => p.Brand);
+            });
+
+            modelBuilder.Entity<User>(a =>
+            {
+                a.ToTable("Users").HasKey(x => x.Id);
+                a.Property(p => p.Id);
+                a.Property(p => p.FirstName);
+                a.Property(p => p.LastName);
+                a.Property(p => p.Email);
+                a.Property(p => p.PasswordHash);
+                a.Property(p => p.PasswordSalt);
+                a.Property(p => p.Status); 
+                a.Property(p => p.AuthenticatorType);                
             });
 
             BrandEntity[] brandEntitySeeds = { new(1, "BMW"), new(2, "Mercedes") };
